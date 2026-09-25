@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CivicAI</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#e9f5f2;
+    color:#234747;
+}
+
+header{
+    height:65px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 6%;
+    border-bottom:1px solid #cbdedb;
+    background:#f5faf9;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.logo span{
+    width:15px;
+    height:15px;
+    display:inline-block;
+    border-radius:50%;
+    background:#e6ad31;
+    margin-right:7px;
+}
+
+nav button{
+    border:0;
+    background:none;
+    margin-left:20px;
+    cursor:pointer;
+    color:#456565;
+}
+
+nav button:hover{
+    color:#167171;
+}
+
+.page{
+    min-height:calc(100vh - 65px);
+    padding:70px 8%;
+    display:flex;
+    align-items:center;
+}
+
+.container{
+    width:100%;
+    max-width:1150px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:40% 60%;
+    gap:45px;
+    align-items:center;
+}
+
+.small{
+    font-size:10px;
+    letter-spacing:3px;
+    color:#648080;
+}
+
+h1{
+    font-family:Georgia,serif;
+    font-size:52px;
+    line-height:1.05;
+    font-weight:normal;
+    margin:20px 0;
+}
+
+h1 span{
+    color:#2b7775;
+    font-style:italic;
+}
+
+.description{
+    max-width:360px;
+    color:#678080;
+    line-height:1.7;
+    font-size:14px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 15px 40px rgba(30,80,80,.15);
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    font-size:10px;
+    color:#748888;
+    border-bottom:1px solid #dce8e6;
+    padding-bottom:14px;
+    margin-bottom:20px;
+}
+
+.status{
+    background:#e3f2ed;
+    padding:5px 10px;
+    border-radius:20px;
+}
+
+h2{
+    font-family:Georgia,serif;
+    font-weight:normal;
+    margin-bottom:18px;
+}
+
+.option{
+    width:100%;
+    padding:16px;
+    margin:8px 0;
+    border:1px solid #cbdedb;
+    background:#f5faf9;
+    border-radius:7px;
+    cursor:pointer;
+    text-align:left;
+    display:flex;
+    justify-content:space-between;
+    color:#254949;
+}
+
+.option:hover{
+    background:#e1f0ed;
+}
+
+.primary{
+    background:#e4ab32;
+    color:white;
+    border:0;
+    border-radius:6px;
+    padding:12px 20px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+input,
+select{
+    width:100%;
+    padding:13px;
+    margin:7px 0 12px;
+    border:1px solid #cbdedb;
+    border-radius:7px;
+}
+
+.dark{
+    background:#07575b;
+    color:white;
+}
+
+.dark .description{
+    color:#b9d2d0;
+}
+
+.dark .card{
+    background:#07575b;
+    box-shadow:none;
+    border:1px solid #3d7c7d;
+}
+
+.dark .top{
+    color:#bdd3d2;
+    border-color:#397778;
+}
+
+.dark input,
+.dark select{
+    background:#12666a;
+    color:white;
+    border-color:#528889;
+}
+
+.dark .option{
+    background:#226d71;
+    color:white;
+    border-color:#4b8989;
+}
+
+.hidden{
+    display:none;
+}
+
+/* DOCUMENT PAGE */
+
+.document-page{
+    background:#faf8ef;
+}
+
+.documents{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:20px;
+}
+
+.document-list button{
+    width:100%;
+    padding:14px;
+    margin:5px 0;
+    text-align:left;
+    background:white;
+    border:1px solid #d6dfdc;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.document-list button:hover{
+    background:#e4f0ed;
+}
+
+.document-content{
+    background:white;
+    border-radius:10px;
+    padding:25px;
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+}
+
+.info{
+    padding:17px 0;
+    border-bottom:1px solid #e5e9e7;
+}
+
+.info h3{
+    font-size:11px;
+    letter-spacing:1px;
+    margin-bottom:7px;
+}
+
+.info p{
+    color:#667676;
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* ELIGIBILITY */
+
+.steps{
+    margin-top:35px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin:25px 0;
+}
+
+.circle{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:#287878;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* SERVICE */
+
+.services{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:15px;
+}
+
+.service{
+    padding:18px;
+    border-radius:7px;
+    background:#e4f1ed;
+    cursor:pointer;
+}
+
+.service:first-child{
+    background:#f1dfa7;
+}
+
+.service h3{
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.service p{
+    font-size:11px;
+    color:#647676;
+}
+
+/* SAVED */
+
+.saved-box{
+    background:white;
+    border-radius:10px;
+    padding:30px;
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+}
+
+.saved-item{
+    padding:18px;
+    border:1px solid #d9e4e1;
+    border-radius:7px;
+    margin-top:12px;
+}
+
+/* LANGUAGE */
+
+.language-box{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.language-box button{
+    padding:14px;
+    border:1px solid #4c8586;
+    border-radius:6px;
+    background:#246c70;
+    color:white;
+    cursor:pointer;
+}
+
+.footer{
+    margin-top:40px;
+    font-size:11px;
+    color:#708080;
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+    .container{
+        grid-template-columns:1fr;
+    }
+
+    h1{
+        font-size:40px;
+    }
+
+    nav button{
+        margin-left:5px;
+        font-size:11px;
+    }
+
+    .documents{
+        grid-template-columns:1fr;
+    }
+
+    .services{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+<div class="logo">
+<span></span>CivicAI
+</div>
+
+<nav>
+
+<button onclick="showPage('home')">
+Home
+</button>
+
+<button onclick="showPage('ask')">
+Ask
+</button>
+
+<button onclick="showPage('documents')">
+Documents
+</button>
+
+<button onclick="showPage('eligibility')">
+Eligibility
+</button>
+
+</nav>
+
+</header>
+
+
+<!-- ================= HOME ================= -->
+
+<section id="home" class="page">
+
+<div class="container">
+
+<div>
+
+<div class="small">
+OPEN CIVICAI • YOUR CIVIC STARTING POINT
+</div>
+
+<h1>
+Public services,<br>
+<span>made clearer.</span>
+</h1>
+
+<p class="description">
+Finding the right service can feel like a maze.
+CivicAI gives you one calm place to ask,
+understand and verify.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="top">
+
+<span>
+CIVICAI / HOME
+</span>
+
+<span class="status">
+● ready to help
+</span>
+
+</div>
+
+<h2>
+What would you like to understand today?
+</h2>
+
+
+<button class="option"
+onclick="showPage('ask')">
+
+<span>
+◯ &nbsp; Ask a question
+</span>
+
+<span>
+→
+</span>
+
+</button>
+
+
+<button class="option"
+onclick="showPage('documents')">
+
+<span>
+▣ &nbsp; Explore services
+</span>
+
+<span>
+→
+</span>
+
+</button>
+
+
+<button class="option"
+onclick="showPage('eligibility')">
+
+<span>
+◎ &nbsp; Check eligibility
+</span>
+
+<span>
+→
+</span>
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= ASK ================= -->
+
+<section id="ask" class="page dark hidden">
+
+<div class="container">
+
+<div>
+
+<div class="small">
+AI SERVICE ASSISTANT • ASK CIVICAI
+</div>
+
+<h1>
+Ask in your<br>
+<span>own words.</span>
+</h1>
+
+<p class="description">
+A practical answer, not a wall of complicated information.
+</p>
+
+<div class="footer">
+● AI powered civic assistance
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="top">
+
+<span>
+CIVICAI / GUIDE
+</span>
+
+<span>
+● secure
+</span>
+
+</div>
+
+
+<div id="answer">
+
+<div style="
+background:#246c70;
+padding:18px;
+border-radius:7px;
+margin-bottom:18px;
+">
+
+<strong>AI</strong>
+
+<br><br>
+
+Hello. Ask me about public services,
+documents, scholarships or government
+service information.
+
+</div>
+
+</div>
+
+
+<input
+id="question"
+placeholder="What do you want to know?"
+>
+
+
+<button class="primary"
+onclick="askQuestion()">
+
+Ask CivicAI
+
+</button>
+
+
+<button class="option"
+onclick="showPage('voice')">
+
+🎤 &nbsp; Try voice assistance
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= VOICE ================= -->
+
+<section id="voice" class="page dark hidden">
+
+<div class="container">
+
+<div>
+
+<div class="small">
+VOICE ASSISTANT
+</div>
+
+<h1>
+Speak naturally.<br>
+<span>We'll listen.</span>
+</h1>
+
+<p class="description">
+Use simple words to ask about a public service.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="top">
+
+<span>
+VOICE GUIDE
+</span>
+
+<span>
+● listening
+</span>
+
+</div>
+
+
+<div style="
+text-align:center;
+padding:40px 20px;
+">
+
+<div style="
+font-size:45px;
+margin-bottom:20px;
+">
+🎙️
+</div>
+
+<h2>
+How can CivicAI help?
+</h2>
+
+<p style="
+color:#b9d2d0;
+margin-bottom:20px;
+">
+Speak your question clearly.
+</p>
+
+<button
+class="primary"
+onclick="startVoice()">
+
+Start listening
+
+</button>
+
+<p id="voiceResult"
+style="margin-top:20px;">
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= DOCUMENTS ================= -->
+
+<section id="documents"
+class="page document-page hidden">
+
+<div class="container">
+
+<div>
+
+<div class="small">
+DOCUMENT EXPLAINER
+</div>
+
+<h1>
+Make paperwork<br>
+<span>make sense.</span>
+</h1>
+
+<p class="description">
+Understand common documents and
+what they are normally used for.
+</p>
+
+</div>
+
+
+<div class="documents">
+
+<div class="document-list">
+
+<button onclick="documentInfo('Income Certificate')">
+Income Certificate
+</button>
+
+<button onclick="documentInfo('Aadhaar Card')">
+Aadhaar Card
+</button>
+
+<button onclick="documentInfo('PAN Card')">
+PAN Card
+</button>
+
+<button onclick="documentInfo('Caste Certificate')">
+Caste Certificate
+</button>
+
+<button onclick="documentInfo('Residence Certificate')">
+Residence Certificate
+</button>
+
+</div>
+
+
+<div class="document-content">
+
+<h2 id="documentTitle">
+Income Certificate
+</h2>
+
+
+<div class="info">
+
+<h3>
+WHY DO I NEED IT?
+</h3>
+
+<p id="why">
+It can be used when a service requires
+income information.
+</p>
+
+</div>
+
+
+<div class="info">
+
+<h3>
+WHY IS IT REQUIRED?
+</h3>
+
+<p id="required">
+Some government services may have
+income-related conditions.
+</p>
+
+</div>
+
+
+<div class="info">
+
+<h3>
+WHERE TO OBTAIN IT?
+</h3>
+
+<p id="where">
+Check the official state or local
+government service portal.
+</p>
+
+</div>
+
+
+<button class="primary"
+onclick="showPage('ask')">
+
+Ask about this document
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= ELIGIBILITY ================= -->
+
+<section id="eligibility"
+class="page hidden">
+
+<div class="container">
+
+<div>
+
+<div class="small">
+ELIGIBILITY CHECKER
+</div>
+
+<h1>
+See what may<br>
+<span>fit your need.</span>
+</h1>
+
+<p class="description">
+Answer a few simple questions and
+get a starting point.
+</p>
+
+
+<div class="steps">
+
+<div class="step">
+<div class="circle">1</div>
+<span>Purpose</span>
+</div>
+
+<div class="step">
+<div class="circle">2</div>
+<span>Basic details</span>
+</div>
+
+<div class="step">
+<div class="circle">3</div>
+<span>Guidance</span>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="top">
+
+<span>
+ELIGIBILITY CHECK
+</span>
+
+<span class="status">
+● guidance only
+</span>
+
+</div>
+
+
+<label>
+Purpose
+</label>
+
+<select id="purpose">
+
+<option>Student</option>
+<option>Employment</option>
+<option>Healthcare</option>
+<option>Farmer</option>
+
+</select>
+
+
+<label>
+State / Region
+</label>
+
+<select id="state">
+
+<option>Karnataka</option>
+<option>Maharashtra</option>
+<option>Tamil Nadu</option>
+<option>Kerala</option>
+
+</select>
+
+
+<label>
+Study Level
+</label>
+
+<select id="study">
+
+<option>College</option>
+<option>School</option>
+<option>University</option>
+
+</select>
+
+
+<button
+class="primary"
+onclick="checkEligibility()">
+
+Check eligibility
+
+</button>
+
+
+<div id="eligibilityResult"
+style="
+margin-top:20px;
+padding:18px;
+background:#e3f2ed;
+border-radius:7px;
+">
+
+Select your details and check eligibility.
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= SERVICE FINDER ================= -->
+
+<section id="service"
+class="page document-page hidden">
+
+<div class="container">
+
+<div>
+
+<div class="small">
+SERVICE FINDER
+</div>
+
+<h1>
+Find the<br>
+<span>service.</span>
+</h1>
+
+<p class="description">
+Search for a service and understand
+where to start.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="top">
+
+<span>
+CIVICAI / SERVICES
+</span>
+
+<span>
+06 / 09
+</span>
+
+</div>
+
+
+<input
+id="serviceSearch"
+placeholder="Search for a public service..."
+onkeyup="searchServices()"
+>
+
+
+<div class="services">
+
+<div class="service">
+<h3>
+Government Scholarships
+</h3>
+<p>
+Education support and scholarship information.
+</p>
+</div>
+
+
+<div class="service">
+<h3>
+Health Support
+</h3>
+<p>
+Find information about public health services.
+</p>
+</div>
+
+
+<div class="service">
+<h3>
+Housing Support
+</h3>
+<p>
+Explore housing related government services.
+</p>
+</div>
+
+</div>
+
+
+<div style="
+margin-top:20px;
+padding:18px;
+background:#e2f1ee;
+border-radius:7px;
+">
+
+<strong>
+Need help?
+</strong>
+
+<p style="
+font-size:13px;
+margin-top:7px;
+color:#647676;
+">
+
+Use CivicAI to understand which service
+may be relevant to your situation.
+
+</p>
+
+<button
+class="primary"
+onclick="showPage('saved')">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= SAVED ================= -->
+
+<section id="saved"
+class="page hidden">
+
+<div class="container">
+
+<div>
+
+<div class="small">
+YOUR SAVED STEPS
+</div>
+
+<h1>
+Keep your next<br>
+<span>steps close.</span>
+</h1>
+
+<p class="description">
+Save useful information so you can
+return to it later.
+</p>
+
+</div>
+
+
+<div class="saved-box">
+
+<div class="top">
+
+<span>
+SAVED INFORMATION
+</span>
+
+<span>
+03 / 09
+</span>
+
+</div>
+
+
+<div class="saved-item">
+
+<strong>
+Your checklist is ready
+</strong>
+
+<p style="
+margin-top:8px;
+font-size:13px;
+color:#687777;
+">
+
+Review the required documents and
+verify the application process.
+
+</p>
+
+</div>
+
+
+<div class="saved-item">
+
+<strong>
+Government Scholarship
+</strong>
+
+<p style="
+margin-top:8px;
+font-size:13px;
+color:#687777;
+">
+
+Student service information saved.
+
+</p>
+
+</div>
+
+
+<button
+class="primary"
+onclick="showPage('language')">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= LANGUAGE ================= -->
+
+<section id="language"
+class="page dark hidden">
+
+<div class="container">
+
+<div>
+
+<div class="small">
+LANGUAGE SUPPORT
+</div>
+
+<h1>
+Same guidance.<br>
+<span>Your language.</span>
+</h1>
+
+<p class="description">
+Choose the language in which you
+want to understand the information.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="top">
+
+<span>
+LANGUAGE
+</span>
+
+<span>
+● available
+</span>
+
+</div>
+
+
+<div class="language-box">
+
+<button onclick="setLanguage('English')">
+English
+</button>
+
+<button onclick="setLanguage('ಕನ್ನಡ')">
+ಕನ್ನಡ
+</button>
+
+<button onclick="setLanguage('हिन्दी')">
+हिन्दी
+</button>
+
+<button onclick="setLanguage('தமிழ்')">
+தமிழ்
+</button>
+
+</div>
+
+
+<p id="selectedLanguage"
+style="
+margin-top:20px;
+text-align:center;
+color:#b9d2d0;
+">
+
+Choose a language
+
+</p>
+
+
+<button
+class="primary"
+onclick="showPage('final')">
+
+Finish
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= FINAL ================= -->
+
+<section id="final"
+class="page dark hidden">
+
+<div class="container">
+
+<div>
+
+<div class="small">
+CIVICAI / COMPLETE
+</div>
+
+<h1>
+Clearer<br>
+<span>first steps.</span>
+</h1>
+
+<p class="description">
+Everything you need to begin,
+in one place.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div style="
+text-align:center;
+padding:35px 15px;
+">
+
+<div style="
+font-size:45px;
+margin-bottom:20px;
+">
+✓
+</div>
+
+<h2>
+Your CivicAI guide is ready.
+</h2>
+
+<p style="
+color:#b9d2d0;
+line-height:1.6;
+margin-bottom:25px;
+">
+
+Ask questions, understand documents,
+check services and keep your next
+steps close.
+
+</p>
+
+<button
+class="primary"
+onclick="showPage('home')">
+
+Back to Home
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<script>
+
+/* PAGE NAVIGATION */
+
+function showPage(page){
+
+    document.querySelectorAll(".page").forEach(function(section){
+        section.classList.add("hidden");
+    });
+
+    document.getElementById(page).classList.remove("hidden");
+
+    window.scrollTo(0,0);
+}
+
+
+/* ASK AI */
+
+function askQuestion(){
+
+    let question =
+    document.getElementById("question").value;
+
+    if(question.trim()==""){
+        alert("Please type your question.");
+        return;
+    }
+
+    let answer =
+    "CivicAI: Based on your question, please check the official government portal for the latest eligibility, required documents and application process.";
+
+    if(question.toLowerCase().includes("scholarship")){
+
+        answer =
+        "CivicAI: Scholarships can depend on your course, state, income and other conditions. Check the official scholarship portal for the current eligibility and required documents.";
+
+    }
+
+    if(question.toLowerCase().includes("aadhaar")){
+
+        answer =
+        "CivicAI: For Aadhaar services, check the official UIDAI service channels for the latest process and required documents.";
+
+    }
+
+    document.getElementById("answer").innerHTML =
+
+    `<div style="
+    background:#246c70;
+    padding:18px;
+    border-radius:7px;
+    margin-bottom:18px;
+    ">
+
+    <strong>AI</strong>
+
+    <br><br>
+
+    ${answer}
+
+    </div>`;
+
+}
+
+
+/* VOICE */
+
+function startVoice(){
+
+    document.getElementById("voiceResult").innerText =
+    "Listening... Speak your question.";
+
+}
+
+
+/* DOCUMENTS */
+
+function documentInfo(name){
+
+    document.getElementById("documentTitle").innerText=name;
+
+    if(name=="Aadhaar Card"){
+
+        document.getElementById("why").innerText =
+        "Aadhaar is used as an identity document for many services.";
+
+        document.getElementById("required").innerText =
+        "Some services require identity verification.";
+
+        document.getElementById("where").innerText =
+        "Use official UIDAI services.";
+
+    }
+
+    else if(name=="PAN Card"){
+
+        document.getElementById("why").innerText =
+        "PAN is commonly used for financial and tax related services.";
+
+        document.getElementById("required").innerText =
+        "It may be required for financial identification.";
+
+        document.getElementById("where").innerText =
+        "Check the official income tax or PAN service portal.";
+
+    }
+
+    else{
+
+        document.getElementById("why").innerText =
+        "It can be used when a service requires this information.";
+
+        document.getElementById("required").innerText =
+        "Some government services may require the document.";
+
+        document.getElementById("where").innerText =
+        "Check the official government service portal.";
+
+    }
+
+}
+
+
+/* ELIGIBILITY */
+
+function checkEligibility(){
+
+    let purpose =
+    document.getElementById("purpose").value;
+
+    let state =
+    document.getElementById("state").value;
+
+    let study =
+    document.getElementById("study").value;
+
+    document.getElementById("eligibilityResult").innerHTML =
+
+    "<strong>PRELIMINARY GUIDANCE</strong><br><br>" +
+
+    "Purpose: " + purpose + "<br>" +
+
+    "State: " + state + "<br>" +
+
+    "Study level: " + study + "<br><br>" +
+
+    "These details can help identify relevant government services. Verify final eligibility on the official government portal.";
+
+}
+
+
+/* LANGUAGE */
+
+function setLanguage(language){
+
+    document.getElementById("selectedLanguage").innerText =
+    "Selected language: " + language;
+
+}
+
+
+/* SERVICE SEARCH */
+
+function searchServices(){
+
+    let search =
+    document.getElementById("serviceSearch")
+    .value
+    .toLowerCase();
+
+    let services =
+    document.querySelectorAll(".service");
+
+    services.forEach(function(service){
+
+        if(service.innerText.toLowerCase().includes(search)){
+
+            service.style.display="block";
+
+        }else{
+
+            service.style.display="none";
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+  </html>
